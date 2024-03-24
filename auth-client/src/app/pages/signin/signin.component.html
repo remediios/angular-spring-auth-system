@@ -5,7 +5,8 @@
 >
   <form [formGroup]="signInForm">
     <app-primary-input
-      formName="email"
+      formControlName="email"
+      inputName="email"
       type="email"
       label="Email"
       placeholder="Enter your email address"
@@ -13,7 +14,8 @@
       <img src="/assets/email-icon.svg" />
     </app-primary-input>
     <app-primary-input
-      formName="password"
+      formControlName="password"
+      inputName="password"
       type="password"
       label="Password"
       placeholder="Enter your password"
