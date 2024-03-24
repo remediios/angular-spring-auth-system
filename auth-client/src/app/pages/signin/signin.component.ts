@@ -9,6 +9,7 @@ import {
 import { PrimaryInputComponent } from '../../components/primary-input/primary-input.component';
 import { Router } from '@angular/router';
 import { SigninService } from '../../services/signin.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signin',
@@ -24,7 +25,11 @@ import { SigninService } from '../../services/signin.service';
 })
 export class SigninComponent {
   signInForm!: FormGroup;
-  constructor(private router: Router, private signInService: SigninService) {
+  constructor(
+    private router: Router,
+    private signInService: SigninService,
+    private toastService: ToastrService
+  ) {
     this.signInForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [
@@ -38,9 +43,11 @@ export class SigninComponent {
     this.signInService
       .signin(this.signInForm.value.email, this.signInForm.value.password)
       .subscribe({
-        next: () => console.log('SUCCESS'),
-        error: (err) => console.log(err),
-        complete: () => console.log('COMPLETE'),
+        next: () => this.toastService.success('Signin successfully'),
+        error: (err) =>
+          this.toastService.error(
+            'Oops! Something went wrong, try again later'
+          ),
       });
   }
 
