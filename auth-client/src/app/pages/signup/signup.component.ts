@@ -11,13 +11,21 @@ import { Router } from '@angular/router';
 import { SigninService } from '../../services/signin.service';
 import { ToastrService } from 'ngx-toastr';
 
-interface SignInForm {
+interface SignUpForm {
+  name: FormControl;
   email: FormControl;
   password: FormControl;
+  passwordConfirm: FormControl;
+}
+interface SignUpForm {
+  name: FormControl;
+  email: FormControl;
+  password: FormControl;
+  passwordConfirm: FormControl;
 }
 
 @Component({
-  selector: 'app-signin',
+  selector: 'app-signup',
   standalone: true,
   imports: [
     DefaultSigninLayoutComponent,
@@ -25,19 +33,24 @@ interface SignInForm {
     PrimaryInputComponent,
   ],
   providers: [SigninService],
-  templateUrl: './signin.component.html',
-  styleUrl: './signin.component.scss',
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.scss',
 })
-export class SigninComponent {
-  signInForm!: FormGroup<SignInForm>;
+export class SignupComponent {
+  signUpForm!: FormGroup<SignUpForm>;
   constructor(
     private router: Router,
     private signInService: SigninService,
     private toastService: ToastrService
   ) {
-    this.signInForm = new FormGroup({
+    this.signUpForm = new FormGroup({
+      name: new FormControl('', [Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      passwordConfirm: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
       ]),
@@ -46,10 +59,10 @@ export class SigninComponent {
 
   submit() {
     this.signInService
-      .signin(this.signInForm.value.email, this.signInForm.value.password)
+      .signin(this.signUpForm.value.email, this.signUpForm.value.password)
       .subscribe({
         next: () => this.toastService.success('Signin successfully'),
-        error: (err) =>
+        error: () =>
           this.toastService.error(
             'Oops! Something went wrong, try again later'
           ),
@@ -57,6 +70,6 @@ export class SigninComponent {
   }
 
   navigate() {
-    return this.router.navigate(['/signup']);
+    return this.router.navigate(['/signin']);
   }
 }
