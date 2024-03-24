@@ -2,4 +2,23 @@
   title="Sign In into your account!"
   primaryBtnText="Login Now"
   secondaryBtnText="Sign Up Now"
-></app-default-signin-layout>
+>
+  <form [formGroup]="signInForm">
+    <app-primary-input
+      formName="email"
+      type="email"
+      label="Email"
+      placeholder="Enter your email address"
+    >
+      <img src="/assets/email-icon.svg" />
+    </app-primary-input>
+    <app-primary-input
+      formName="password"
+      type="password"
+      label="Password"
+      placeholder="Enter your password"
+    >
+      <img src="/assets/password-icon.svg" />
+    </app-primary-input>
+  </form>
+</app-default-signin-layout>
