@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { PrimaryInputComponent } from '../../components/primary-input/primary-input.component';
 import { Router } from '@angular/router';
-import { SigninService } from '../../services/signin.service';
 import { ToastrService } from 'ngx-toastr';
+import { SignupService } from '../../services/signup.service';
 
 interface SignUpForm {
   name: FormControl;
@@ -32,7 +32,7 @@ interface SignUpForm {
     ReactiveFormsModule,
     PrimaryInputComponent,
   ],
-  providers: [SigninService],
+  providers: [SignupService],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
@@ -40,7 +40,7 @@ export class SignupComponent {
   signUpForm!: FormGroup<SignUpForm>;
   constructor(
     private router: Router,
-    private signInService: SigninService,
+    private signUpService: SignupService,
     private toastService: ToastrService
   ) {
     this.signUpForm = new FormGroup({
@@ -58,10 +58,14 @@ export class SignupComponent {
   }
 
   submit() {
-    this.signInService
-      .signin(this.signUpForm.value.email, this.signUpForm.value.password)
+    this.signUpService
+      .signin(
+        this.signUpForm.value.name,
+        this.signUpForm.value.email,
+        this.signUpForm.value.password
+      )
       .subscribe({
-        next: () => this.toastService.success('Signin successfully'),
+        next: () => this.toastService.success('SignUp successfully'),
         error: () =>
           this.toastService.error(
             'Oops! Something went wrong, try again later'
